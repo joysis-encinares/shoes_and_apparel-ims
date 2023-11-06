@@ -1,9 +1,9 @@
 package app.controllers;
 
 import app.configdb.DatabaseConnect;
+import static app.controllers.MenuController.userMenu;
 import app.models.Customer;
 import app.models.Product;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class UserController extends DatabaseConnect{
     Scanner scan = new Scanner(System.in);
     Customer customer = new Customer();
-    Customer c = new Customer();
+    MenuController mc = new MenuController();
     Date date = new Date();
 
    // new customer form
@@ -86,7 +86,7 @@ public class UserController extends DatabaseConnect{
             result = stmt.executeQuery(query);
 
             while(result.next()){
-                System.out.println(result.getInt(1));
+                // System.out.println(result.getInt(1));
                 stock = result.getInt(1);
             }
         } catch (Exception e) {
@@ -100,8 +100,8 @@ public class UserController extends DatabaseConnect{
     
     // update stock on database
     void updateStock(int productId, int stock){
-        int updatedStock = stock - c.getQuantity();
-        System.out.println("USTOCK: " + updatedStock);
+        int updatedStock = stock - customer.getQuantity();
+        System.out.println("On Stock (updated): " + updatedStock);
         String query = "UPDATE products SET on_stock = " + updatedStock + " WHERE products.product_id = " + productId;
         try {
             ConnectDB();
@@ -113,10 +113,12 @@ public class UserController extends DatabaseConnect{
     }
     
     // Create Order 
-    public void createOrder(){
-        Product p = new Product();
+    public void createOrder(int user_id){
+        // Product p = new Product();
         //  System.out.println( p.getOnStock());
         System.out.println("\n[CREATE ORDER]");
+        System.out.println("Invoice Manager ID: " + user_id);
+
         System.out.println("\n[1] Get Customer Info (new) \n[2] Regular Customer");
         Scanner sc = new Scanner(System.in);
         ProductController pc = new ProductController();
@@ -131,14 +133,13 @@ public class UserController extends DatabaseConnect{
                     break;
                 case 2: 
                     displayCustomer();
-                   
                     break;
                 default:
                     System.out.println("Invalid Input");
             }
         } catch (InputMismatchException ime) {
             System.out.println("Please enter number only");
-            createOrder();
+            createOrder(user_id);
         } catch (Exception e){
             System.out.println(e);
         }
@@ -150,10 +151,31 @@ public class UserController extends DatabaseConnect{
         int productId = sc.nextInt();
         System.out.print("Please input quantity: ");
         int quantity = sc.nextInt();
-        c.setQuantity(quantity);
+        customer.setQuantity(quantity);       
         
-        String query = "INSERT INTO orders (customer_id, product_id, order_quantity, invoice_manager) VALUES (?,?,?,?)";
-        getStockById(productId);
+        try {
+            System.out.println("Continue? [1]Yes [Any]Back to Menu");
+            int selector = sc.nextInt();
+            switch(selector){
+                case 1:
+                    System.out.println("Preparing order...");
+                    break;
+                 default:
+                    System.out.println("Back to Menu");
+                    userMenu();
+                    break;
+            }
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("Please input number only");
+            userMenu();
+        } catch (Exception e) {
+            System.out.println("Order failed.\nSomething went wrong. Please try again");
+            userMenu();
+        }
+        
+        // System.out.println("Invoice Manager: " + user.getId());
+        
+        String query = "INSERT INTO orders (customer_id, product_id, order_quantity, invoice_manager) VALUES (?,?,?,"+ user_id +")";
         
         try {
             ConnectDB();
@@ -161,17 +183,22 @@ public class UserController extends DatabaseConnect{
             pst.setInt(1, customerId);
             pst.setInt(2, productId);
             pst.setInt(3, quantity);
-            pst.setInt(4, 101);
-            
+            // pst.setInt(4, user_id); 
             pst.executeUpdate();
+            getStockById(productId);
             System.out.println("Order successfully created for customer id: " + customerId);
             System.out.println( "Date: " + df.format(date));
             System.out.println( "Time: " + tf.format(date));
-            // menu();
+            userMenu();
             connect.close();
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("Order failed.\nSomething went wrong. Please try again");
+            userMenu();
         }
     }
-    
+  
+        public static void main(String[] args) {
+            UserController uc = new UserController();
+            uc.createOrder(20230004);
+        }
 }

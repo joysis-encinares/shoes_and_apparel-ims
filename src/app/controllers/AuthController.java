@@ -1,9 +1,11 @@
 package app.controllers;
 
 import app.configdb.DatabaseConnect;
+import app.main.Main;
 import app.models.User;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Date;  
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,6 +14,7 @@ interface Controllable {
     abstract String validateUsername(String name);
     abstract String validateContact(String contact);
     abstract String validateEmail(String email);
+    void timeIn(int user_id);
     void birthMonth(String month);
     void birthDay(int day);
     void birthYear(int year);
@@ -20,6 +23,7 @@ interface Controllable {
 public class AuthController extends DatabaseConnect implements Controllable{
     
     User user = new User();
+    static Main main = new Main();
     
     @Override
     public void birthMonth(String month){
@@ -307,11 +311,96 @@ public class AuthController extends DatabaseConnect implements Controllable{
         System.out.println("----------------------------------------");
     }
     
+    public void login(int user_id, String username, String password){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("\n[Login User]");
+        
+        System.out.print("User ID: ");
+        user.setId(sc.nextInt()); sc.nextLine();
+        System.out.print("Username: ");
+        user.setUserName(sc.nextLine());
+        user.getUserName();
+        System.out.print("Password: ");
+        user.setPassword(sc.nextLine());
+        
+        String query = "SELECT * FROM users WHERE user_id=? and username=? and password=?";
+        
+        try {
+            ConnectDB();
+            pst = connect.prepareStatement(query);
+            pst.setInt(1,user.getId());
+            pst.setString(2,user.getUserName());
+            pst.setString(3,user.getPassword());
+            
+            result = pst.executeQuery();
+            if(result.next()){
+                user.setRole(result.getInt(11));
+                if(user.getRole() == 1){
+                    // System.out.println("Role: " + result.getInt(11));
+                    main.adminDashboard(user.getUserName(),user.getPassword(), user.getRole(),user.getId());
+                } else {
+                    // System.out.println("Role: " + result.getInt(11));
+                    main.userDashboard(user.getUserName(),user.getPassword(), user.getRole(),user.getId());
+                } 
+            } 
+            else{
+                System.out.println("Access Denied. Invalid username or password. Try Again");
+                login(user.getId(),user.getUserName(),user.getPassword());
+            }
+        } catch (SQLException e) {
+            System.out.println(e); 
+        }
+    }
+    // INSERT INTO `log_details` (`log_id`, `users_id`, `time_login`, `time_logout`) VALUES (NULL, '20230004', '', '');
+    
+    @Override
+    public void timeIn(int user_id){
+        Date date = new Date();
+        String timeIn = tf.format(date);
+        String dateTimeIn = df.format(date);
+        String query = "INSERT INTO log_details (users_id, date_login, time_login) values (" + user_id + ", ?,?)";
+        
+        try {
+            ConnectDB();
+            pst = connect.prepareStatement(query);
+            pst.setString(1, dateTimeIn);
+            pst.setString(2, timeIn);
+            pst.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    
+    public void timeOut(){
+        Date date = new Date();
+        String timeOut = tf.format(date);
+        String query = "SELECT log_id FROM log_details ORDER BY log_id";
+        try {
+            ConnectDB();
+            stmt = connect.createStatement();
+            result = stmt.executeQuery(query);
+            System.out.println("--------------------------------");
+            while(result.last()){
+                // System.out.println("Log ID: " + result.getString(1));
+                user.setLogId(result.getInt(1));
+                break;
+            }
+            connect.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        String query2 = "UPDATE log_details SET time_logout = '"+ timeOut +"'  WHERE log_id = " + user.getLogId() + " ";
+        try {
+            ConnectDB();
+            pst = connect.prepareStatement(query2);
+            pst.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+    
     public static void main(String[] args) {
         AuthController auth = new AuthController();
-        auth.userForm();
-//        auth.display();
-//        auth.validateContact(null);
-        
+        auth.timeOut();
     }
 }

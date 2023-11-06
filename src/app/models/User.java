@@ -17,6 +17,7 @@ public class User {
     private String gender;
     private int role;
     private String createAt;
+    private int logId;
     
     // Setter
     public void setId(int id){
@@ -78,6 +79,10 @@ public class User {
     public void setMonth(int month){
         this.month = month;
     }
+    
+    public void setLogId(int logId){
+        this.logId = logId;
+    }
 
     // Getter
     public int getId(){return id;}
@@ -109,6 +114,8 @@ public class User {
     public String getCreatedAt(){return createAt;}
     
     public int getMonth(){return month;}
+    
+    public int getLogId(){return logId;}
 
 }
 
