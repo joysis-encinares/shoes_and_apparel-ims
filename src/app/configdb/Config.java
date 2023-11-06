@@ -1,6 +1,7 @@
 package app.configdb;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 public abstract class Config {
     
     final protected String DRIVER = "com.mysql.jdbc.Driver";
@@ -12,4 +13,10 @@ public abstract class Config {
     public Statement stmt;
     public ResultSet result;
     public PreparedStatement pst;
+    
+    public final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    public final SimpleDateFormat tf = new SimpleDateFormat("HH:mm:ss");
+    public final SimpleDateFormat dtformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    
 }

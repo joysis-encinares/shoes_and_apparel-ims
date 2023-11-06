@@ -12,9 +12,6 @@ public class UserController extends DatabaseConnect{
     Scanner scan = new Scanner(System.in);
     Customer customer = new Customer();
     Customer c = new Customer();
-
-    private static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-    private static final SimpleDateFormat tf = new SimpleDateFormat("HH:mm:ss");
     Date date = new Date();
 
    // new customer form
@@ -177,9 +174,4 @@ public class UserController extends DatabaseConnect{
         }
     }
     
-    public static void main(String[] args) {
-        UserController uc = new UserController();
-        uc.createOrder();
-        // uc.getStockById(1000);
-    }
 }
