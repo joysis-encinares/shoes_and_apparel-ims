@@ -11,7 +11,7 @@ public class ProductController extends DatabaseConnect {
             ConnectDB();
             stmt = connect.createStatement();
             result = stmt.executeQuery(qry);
-            System.out.println("[PRODUCT LIST]");
+            System.out.println("\n[PRODUCT LIST]");
 //            System.out.println("Product ID\tProduct Brand\tProduct Model\tON STOCK");
             
             while(result.next()){
@@ -28,10 +28,4 @@ public class ProductController extends DatabaseConnect {
             System.out.println(e);
         }
     }
-    
-    // 
-    public void seeReports(){
-    
-    }
-    
 }
