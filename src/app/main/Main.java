@@ -9,7 +9,7 @@ public class Main extends MenuController{
         auth.timeIn(user_id);
         user.setUserName(username);
         user.setId(user_id);
-        user.setRole(role);
+        user.setRole(role); 
         System.out.println("Welcome, " + username + "!");
         adminMenu();
      }

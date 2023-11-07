@@ -9,10 +9,9 @@ public class ProductController extends DatabaseConnect {
     
     Product product = new Product();
     
-    
     // Read | See all product
     public void displayProduct(){
-        String qry = "Select * from products";
+        String qry = "Select * from products WHERE product_archived = 0";
         try {
             ConnectDB();
             stmt = connect.createStatement();
@@ -67,7 +66,8 @@ public class ProductController extends DatabaseConnect {
     public void createProduct(int user_id){
         // INSERT INTO `products` (`product_id`, `product_brand`, `product_model`, `product_description`, `product_size`, `product_category`, `product_archived`, `on_stock`, `created_by`) VALUES (NULL, 'Adidas', 'Stan Smith Shoes', 'Adidas Stan Smith Shoes', '3', '1', '0', '500', '20230001');
 
-        String query = "INSERT INTO products (product_id, product_brand, product_model, product_description, product_size, product_category, product_archived, on_stock, created_by) VALUES (?,?,?,?,?,?,?,?,?)"; 
+        String query = "INSERT INTO products (product_id, product_brand, product_model, product_description, product_size, product_category, product_archived, on_stock, created_by) "
+                     + "VALUES (?,?,?,?,?,?,?,?,?)"; 
         try {
             ConnectDB();
             pst = connect.prepareStatement(query);
@@ -94,9 +94,10 @@ public class ProductController extends DatabaseConnect {
             System.out.println("Something went wrong...");
         }
     }
+    
     public static void main(String[] args) {
         ProductController pc = new ProductController();
         // pc.productForm(20230001);
-        pc.displayProduct();
+         pc.displayProduct();
     }
 }

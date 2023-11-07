@@ -15,7 +15,6 @@ public class UserController extends DatabaseConnect{
     Scanner scan = new Scanner(System.in);
     Customer customer = new Customer();
     Date date = new Date();
-    // MenuController mc = new MenuController();
 
     // new customer form
     private void customerForm(){
@@ -29,19 +28,21 @@ public class UserController extends DatabaseConnect{
     
     // insert new customer to customers table
     private void newCustomer(){
-        String qry = "INSERT INTO customers (customer_name, customer_contact) VALUES (?,?)";
+        String query = "INSERT INTO customers (customer_name, customer_contact) VALUES (?,?)";
         
         // use our getter method, checking 
         System.out.println("Name & Contact: " + customer.getCustomerName() + ", " + customer.getCustomerContact());
         try {
             ConnectDB();
-            pst = connect.prepareStatement(qry);
+            pst = connect.prepareStatement(query);
             pst.setString(1, customer.getCustomerName()); 
             pst.setString(2, customer.getCustomerContact());
             pst.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
         } catch (Exception e) {
             System.out.println(e);
-        }
+        } 
         System.out.println("Customer " + customer.getCustomerName() + " added successfully");
     }
     
@@ -76,9 +77,11 @@ public class UserController extends DatabaseConnect{
                 // System.out.println(result.getInt(1));
                 stock = result.getInt(1);
             }
+        } catch (SQLException e) {
+            System.out.println(e);
         } catch (Exception e) {
             System.out.println(e);
-        }
+        } 
         
         updateStock(productId, stock);
         // System.out.println("stock: " +  stock);
@@ -94,9 +97,11 @@ public class UserController extends DatabaseConnect{
             ConnectDB();
             pst = connect.prepareStatement(query);
             pst.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
         } catch (Exception e) {
             System.out.println(e);
-        }
+        } 
     }
     
     // Create Order 

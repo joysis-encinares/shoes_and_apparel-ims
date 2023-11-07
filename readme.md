@@ -25,10 +25,13 @@ Prince Derick Ompoc <br>
 Update Product <br>
 Delete Product <br>
 
-Create Category <br>
-Delete Category <br>
+**Category** <br>
+~~Create Category~~ ✔ <br>
+~~Delete Category~~ ✔ <br>
+~~Display Categories~~ ✔ <br>
 
-~~Read User~~ <br>
+**User**
+~~Display User~~ ✔ <br>
 Update User <br>
 Delete User <br>
 ~~Edit Profile -> update~~ ✔ <br>
@@ -41,5 +44,3 @@ System Flow Admin <br>
 
 ~~Login System~~ ✔ <br>
 ~~User Registration~~ ✔ username, email, contact validation <br>
-
-Dagdag na lang kung ano kulang

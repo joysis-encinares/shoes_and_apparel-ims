@@ -9,6 +9,9 @@ public class MenuController {
     protected static AuthController auth = new AuthController();
     protected static UserController uc = new UserController();
     protected static AdminController admin = new AdminController();
+    protected static ProductController pc = new ProductController();
+    protected static CategoryControler cc = new CategoryControler();
+
     protected static User user = new User();
 
     protected static void userMenu(){
@@ -23,6 +26,7 @@ public class MenuController {
             int selector = scan.nextInt();
             switch(selector){
             case 1:
+                pc.displayProduct();
                 uc.createOrder(user.getId());
                 break;
             case 2:
@@ -31,8 +35,6 @@ public class MenuController {
             case 3:
                 auth.timeOut();
                 menu();
-                break;
-            case 4:
                 break;
             default:
                 System.out.println("Invalid input");
@@ -57,7 +59,6 @@ public class MenuController {
         System.out.println("[6] Edit Profile");
         System.out.println("[7] Logout");
 
-
         try {
             System.out.print("Select: ");
             Scanner scan = new Scanner(System.in);
@@ -71,6 +72,7 @@ public class MenuController {
                     switch(selector){
                         case 1:
                             System.out.println("Create Product");
+                            pc.createProduct(user.getId());
                             break;
                         case 2:
                             System.out.println("Update Product");
@@ -95,15 +97,18 @@ public class MenuController {
                     switch(selector){
                         case 1:
                             System.out.println("New Category");
+                            cc.newCategoryForm();
                             break;
                         case 2:
                             System.out.println("Update Category");
                             break;
                         case 3:
                             System.out.println("Delete Category");
+                            cc.deleteCategoryForm();
                             break;
                         case 4:
                             System.out.println("View Categories");
+                            cc.categoryForm();
                             break;
                         default:
                              System.out.println("Invalid input");

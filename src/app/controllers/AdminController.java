@@ -3,7 +3,7 @@ package app.controllers;
 import app.configdb.DatabaseConnect;
 
 
-public class AdminController extends DatabaseConnect implements Controllable{
+public class AdminController extends DatabaseConnect {
    
     protected static MenuController menu = new MenuController();
     
@@ -96,8 +96,7 @@ public class AdminController extends DatabaseConnect implements Controllable{
             System.out.println(e);
         } 
     };
-    
-    
+
     
     public static void main(String[] args) {
         AdminController admin = new AdminController();
