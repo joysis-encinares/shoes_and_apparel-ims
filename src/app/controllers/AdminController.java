@@ -2,17 +2,13 @@ package app.controllers;
 
 import app.configdb.DatabaseConnect;
 
-interface Controllable {
-    void seeReports();
-    void checkLogDetails();
-}
 
 public class AdminController extends DatabaseConnect implements Controllable{
    
     protected static MenuController menu = new MenuController();
-    @Override
+    
     public void seeReports(){
-        System.out.println("\n[See Invoiced Reports]");
+        System.out.println("\n[Invoiced Reports]");
         
         String query = "SELECT orders.invoice_id, customers.customer_name, products.product_brand, products.product_model, orders.order_quantity, orders.order_date, users.user_firstname "
             + "FROM orders "
@@ -42,7 +38,6 @@ public class AdminController extends DatabaseConnect implements Controllable{
         }
     }
     
-    @Override
     public void checkLogDetails(){
         System.out.println("\n[Check Log Reports]\n");
         
@@ -73,9 +68,41 @@ public class AdminController extends DatabaseConnect implements Controllable{
         }
     };
     
+    public void viewUsers(){
+        System.out.println("\n[All Users List]\n");
+        // SELECT * FROM `users` ORDER BY `users`.`user_id` ASC
+        String query = "SELECT * FROM users ORDER BY users.user_id ASC";
+        try {
+            ConnectDB();
+            stmt = connect.createStatement();
+            result = stmt.executeQuery(query);
+            while(result.next()){
+                System.out.println("ID: " + result.getInt(1));
+                System.out.print("Role: ");
+                System.out.println((result.getInt(11) > 0) ? "Admin" : "User");
+                System.out.println("Name: " + result.getString(2) + " " + result.getString(3));
+                System.out.println("Birthday: " + result.getString(4));
+                System.out.println("Age: " + result.getString(5));
+                System.out.println("Gender: " + result.getString(6));
+                System.out.println("Username: " + result.getString(7));
+                System.out.println("Email: " + result.getString(9));
+                System.out.println("Contact: " + result.getString(10));
+                System.out.println("Account Created: " + result.getString(12));
+                System.out.println("--------------------------------------");
+            }
+            connect.close();
+            menu.adminMenu();
+        } catch (Exception e) {
+            System.out.println(e);
+        } 
+    };
+    
+    
+    
     public static void main(String[] args) {
         AdminController admin = new AdminController();
         // admin.seeReports();
-        admin.checkLogDetails();
+        // admin.checkLogDetails();
+        admin.viewUsers();
     }
 }

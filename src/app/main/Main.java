@@ -19,6 +19,7 @@ public class Main extends MenuController{
         auth.timeIn(user_id);
         user.setUserName(username);
         user.setId(user_id);
+        user.setRole(role);
         System.out.println("Welcome, " + username + "!");
         userMenu();
      }
@@ -32,7 +33,6 @@ public class Main extends MenuController{
         System.out.println("**                           GROUP 4                            **");
         System.out.println("*                                                                *");
         System.out.println("------------------------------------------------------------------");
-                             
         menu();
     }
     

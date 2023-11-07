@@ -49,11 +49,14 @@ public class MenuController {
     
     protected static void adminMenu(){
         System.out.println("\n[ADMIN MENU]");
-        System.out.println("[1] Create Product     [6] Update User      [11] Edit Profile");
-        System.out.println("[2] Delete Product     [7] Delete User      [12] Logout");
-        System.out.println("[3] Update Product     [8] View Users");
-        System.out.println("[4] View All Products  [9] Invoiced Reports");
-        System.out.println("[5] View All Users     [10] Log Reports");
+        System.out.println("[1] Check Products");
+        System.out.println("[2] Check Category");
+        System.out.println("[3] Check Users");
+        System.out.println("[4] Invoice Reports");
+        System.out.println("[5] Log Details");
+        System.out.println("[6] Edit Profile");
+        System.out.println("[7] Logout");
+
 
         try {
             System.out.print("Select: ");
@@ -61,31 +64,88 @@ public class MenuController {
             int selector = scan.nextInt();
             switch(selector){
                 case 1:
+                    System.out.println("\n[Check Products]");
+                    System.out.println("[1] Create Product\n[2] Update Product\n[3] Delete Product\n[4] View Products");
+                    System.out.print("Select:");
+                    selector = scan.nextInt();
+                    switch(selector){
+                        case 1:
+                            System.out.println("Create Product");
+                            break;
+                        case 2:
+                            System.out.println("Update Product");
+                            break;
+                        case 3:
+                            System.out.println("Delete Product");
+                            break;
+                        case 4:
+                            System.out.println("View Products");
+                            break;
+                        default:
+                             System.out.println("Invalid input");
+                             adminMenu();
+                             break;
+                    }
                     break;
                 case 2:
+                    System.out.println("\n[Check Category]");
+                    System.out.println("[1] New Category\n[2] Update Category\n[3] Delete Category\n[4] View Categories");
+                    System.out.print("Select:");
+                    selector = scan.nextInt();
+                    switch(selector){
+                        case 1:
+                            System.out.println("New Category");
+                            break;
+                        case 2:
+                            System.out.println("Update Category");
+                            break;
+                        case 3:
+                            System.out.println("Delete Category");
+                            break;
+                        case 4:
+                            System.out.println("View Categories");
+                            break;
+                        default:
+                             System.out.println("Invalid input");
+                             adminMenu();
+                             break;
+                    }
                     break;
                 case 3:
+                    System.out.println("\n[Check Users]");
+                    System.out.println("[1] Create User\n[2] Update User\n[3] Delete User\n[4] View Users");
+                    System.out.print("Select:");
+                    selector = scan.nextInt();
+                    switch(selector){
+                        case 1:
+                            System.out.println("Create User");
+                            break;
+                        case 2:
+                            System.out.println("Update User");
+                            break;
+                        case 3:
+                            System.out.println("Delete User");
+                            break;
+                        case 4:
+                            System.out.println("View Users");
+                            admin.viewUsers();
+                            break;
+                        default:
+                             System.out.println("Invalid input");
+                             adminMenu();
+                             break;
+                    }
                     break;
                 case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    break;
-                case 8:
-                    break;
-                case 9:
                     admin.seeReports();
                     break;
-                case 10:
+                case 5:
                     admin.checkLogDetails();
                     break;
-                case 11:
+                case 6:
                     uc.editProfile(user.getId(),user.getRole());
                     break;
-                case 12:
+                case 7:
                     auth.timeOut();
                     menu();
                     break;

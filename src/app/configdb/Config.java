@@ -17,6 +17,4 @@ public abstract class Config {
     public final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
     public final SimpleDateFormat tf = new SimpleDateFormat("HH:mm:ss");
     public final SimpleDateFormat dtformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-    
 }
