@@ -14,7 +14,7 @@ public class Product {
         this.brand = name;
     }
     
-    public void setModel(String name) {
+    public void setModel(String model) {
         this.model = model;
     }
 

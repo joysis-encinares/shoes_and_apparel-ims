@@ -1,8 +1,14 @@
-##shoes_and_apparel-ims <br>	
+## shoes_and_apparel-ims
+# Software Developement
 
-#Software Developement
-
-**Task: Group 4**<br>
+**Task: Group 4** <br>
+**Shoes and Apparel Inventory System** <br>
+Jerome Encinares <br>
+Emmar Del Monte <br>
+JazzMar Solas <br>
+Andrea Dingcong Nery <br>
+Mark Ghino Sebanes <br>
+Prince Derick Ompoc <br>
 
 **User** <br>
 ~~Creating Order/Invoice~~ ✔ <br>
@@ -13,7 +19,8 @@
 **Admin** <br>
 ~~See Invoiced Reports~~ ✔ using inner join, three tables  <br>
 
-**Create Product** <br>
+**Product** <br>
+~~Create Product~~ ✔ <br>
 ~~Read Product~~ ✔ <br>
 Update Product <br>
 Delete Product <br>
@@ -28,9 +35,11 @@ Delete User <br>
 
 ~~Check User Log Details~~ ✔ <br>
 
-**Main**
+**Main** <br>
 ~~System Flow User~~ ✔ <br>
 System Flow Admin <br>
 
-~~Login System~~ ✔
+~~Login System~~ ✔ <br>
 ~~User Registration~~ ✔ username, email, contact validation <br>
+
+Dagdag na lang kung ano kulang
