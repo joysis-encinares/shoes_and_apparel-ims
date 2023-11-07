@@ -2,9 +2,15 @@ package app.controllers;
 
 import app.configdb.DatabaseConnect;
 
+interface Controllable {
+    void seeReports();
+    void checkLogDetails();
+}
 
-public class AdminController extends DatabaseConnect{
+public class AdminController extends DatabaseConnect implements Controllable{
    
+    protected static MenuController menu = new MenuController();
+    @Override
     public void seeReports(){
         System.out.println("\n[See Invoiced Reports]");
         
@@ -30,13 +36,46 @@ public class AdminController extends DatabaseConnect{
                 System.out.println("--------------------------------");
             }
             connect.close();
+            menu.adminMenu();
         } catch (Exception e) {
             System.out.println(e);
         }
     }
     
+    @Override
+    public void checkLogDetails(){
+        System.out.println("\n[Check Log Reports]\n");
+        
+        String query = "SELECT log_details.log_id, log_details.date_login, log_details.time_login, log_details.time_logout, users.user_id, users.user_firstname "
+            + "FROM log_details "
+            + "INNER JOIN users ON log_details.users_id = users.user_id WHERE log_details.time_logout <> 'NULL' ORDER BY log_details.log_id ";
+        
+        try {
+            ConnectDB();
+            stmt = connect.createStatement();
+            result = stmt.executeQuery(query);
+            System.out.println("LOG ID\tLOG DATE    TIME IN   TIME OUT  USER ID\t  NAME");    
+            System.out.println("------------------------------------------------------------------");
+
+            while(result.next()){
+                System.out.println(" " + result.getString(1) 
+                + "\t" + result.getString(2)
+                + "  " + result.getString(3)
+                + "  " + result.getString(4)
+                + "  " + result.getString(5)
+                + "  " + result.getString(6));
+            }
+            System.out.println("------------------------------------------------------------------");
+            connect.close();
+            menu.adminMenu();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    };
+    
     public static void main(String[] args) {
         AdminController admin = new AdminController();
-        admin.seeReports();
+        // admin.seeReports();
+        admin.checkLogDetails();
     }
 }

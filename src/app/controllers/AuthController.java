@@ -325,7 +325,6 @@ public class AuthController extends DatabaseConnect implements Controllable{
         user.setPassword(sc.nextLine());   
     };
     
-    
     // "insert into users (id,username,password,email,firstname,lastname,dateofbirth,age,role)values(?,?,?,?,?,?,?,?,?)"
     public void createUser(){
         String query = "INSERT INTO USERS (user_firstname,user_lastname,user_birthday,user_age,user_gender,username,password,user_email,user_contact,role,created_At) "
@@ -438,11 +437,12 @@ public class AuthController extends DatabaseConnect implements Controllable{
             result = stmt.executeQuery(query);
             System.out.println("--------------------------------");
             while(result.last()){
-                // System.out.println("Log ID: " + result.getString(1));
                 user.setLogId(result.getInt(1));
                 break;
             }
             connect.close();
+        } catch (SQLException e) {
+            System.out.println(e);
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -452,21 +452,26 @@ public class AuthController extends DatabaseConnect implements Controllable{
             ConnectDB();
             pst = connect.prepareStatement(query2);
             pst.executeUpdate();
+            System.out.println("Time out: " + timeOut);
+            System.out.println("User " + user.getUserName() + " has been logged out");
+        } catch (SQLException e) {
+            System.out.println(e);
         } catch (Exception e) {
+            System.out.println(e);
         }
     }
     
     public static void main(String[] args) {
-        AuthController auth = new AuthController();
+        // AuthController auth = new AuthController();
         // auth.timeOut();
-        //auth.userForm(20230007);
-//        System.out.println("First Name: " + user.getFirstName());
-//        System.out.println("Last Name: " + user.getLastName());
-//        System.out.println("Contact: " + user.getLastName());
-//        System.out.println("Birthday: " + user.getMonthOfBirth() + " " + user.getDayOfBirth() + ", " + user.getYearOfBirth());
-//        System.out.print("Password: ");
-//        for (int i = 0; i < user.getPassword().length(); i++) {
-//            System.out.print("*");
-//        }System.out.println("");
+        // auth.userForm(20230007);
+        // System.out.println("First Name: " + user.getFirstName());
+        // System.out.println("Last Name: " + user.getLastName());
+        // System.out.println("Contact: " + user.getLastName());
+        // System.out.println("Birthday: " + user.getMonthOfBirth() + " " + user.getDayOfBirth() + ", " + user.getYearOfBirth());
+        // System.out.print("Password: ");
+        // for (int i = 0; i < user.getPassword().length(); i++) {
+        //   System.out.print("*");
+        // }System.out.println("");
     }
 }

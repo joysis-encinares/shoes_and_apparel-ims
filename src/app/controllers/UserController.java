@@ -2,8 +2,10 @@ package app.controllers;
 
 import app.configdb.DatabaseConnect;
 import static app.controllers.AuthController.user;
+import static app.controllers.MenuController.adminMenu;
 import static app.controllers.MenuController.userMenu;
 import app.models.Customer;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -55,9 +57,11 @@ public class UserController extends DatabaseConnect{
                 System.out.println(result.getInt("customer_id") + "  |  " + result.getString("customer_name") + "\t  | " + result.getString("customer_contact"));
             }
             connect.close();
+        } catch (SQLException e) {
+            System.out.println(e);
         } catch (Exception e) {
             System.out.println(e);
-        }
+        } 
     }
     
     int getStockById(int productId){
@@ -157,9 +161,7 @@ public class UserController extends DatabaseConnect{
         }
         
         // System.out.println("Invoice Manager: " + user.getId());
-        
         String query = "INSERT INTO orders (customer_id, product_id, order_quantity, invoice_manager) VALUES (?,?,?,"+ user_id +")";
-        
         try {
             ConnectDB();
             pst = connect.prepareStatement(query);
@@ -181,19 +183,18 @@ public class UserController extends DatabaseConnect{
     }
   
     // UPDATE `users` SET `password` = '12345' WHERE `users`.`user_id` = 20230003;
-    public void editProfile(int user_id){
-        
+    public void editProfile(int user_id, int role){
         // auth.userForm(20230007);
         auth.userForm(user_id);
         String birthday = user.getMonthOfBirth() + " " + user.getDayOfBirth() + ", " + user.getYearOfBirth();
         // UPDATE users SET user_firstname = 'Don',user_lastname = 'Martin' WHERE users.user_id = 20230007;
         String query = "UPDATE users SET user_firstname = '"+ user.getFirstName() + "', "
-                                       + "user_lastname = '" + user.getLastName() + "', "
-                                       + "user_birthday = '" + birthday + "', "
-                                       + "user_age = '" + user.getAge() + "', "
-                                       + "user_contact = '" + user.getContact() + "', "
-                                       + "password = '" + user.getPassword() + "' "
-                                       + " WHERE users.user_id = " + user_id +"";
+                    + "user_lastname = '" + user.getLastName() + "', "
+                    + "user_birthday = '" + birthday + "', "
+                    + "user_age = '" + user.getAge() + "', "
+                    + "user_contact = '" + user.getContact() + "', "
+                    + "password = '" + user.getPassword() + "' "
+                    + " WHERE users.user_id = " + user_id +"";
         try {
             ConnectDB();
             pst = connect.prepareStatement(query);
@@ -210,7 +211,13 @@ public class UserController extends DatabaseConnect{
                 System.out.print("*");
             }
             System.out.println("");
-            userMenu();
+            
+            if(user.getRole() == 1){
+                adminMenu();
+            } else {
+                userMenu();
+            }
+            
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -219,6 +226,5 @@ public class UserController extends DatabaseConnect{
     public static void main(String[] args) {
         UserController uc = new UserController();
         // uc.createOrder(20230004);
-        uc.editProfile(20230007);
     }
 }
