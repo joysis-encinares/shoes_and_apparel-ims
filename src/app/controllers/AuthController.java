@@ -18,11 +18,13 @@ interface Controllable {
     void birthMonth(String month);
     void birthDay(int day);
     void birthYear(int year);
+    void userForm();
+    void userForm(int user_id);
 }
 
 public class AuthController extends DatabaseConnect implements Controllable{
     
-    User user = new User();
+    public static User user = new User();
     static Main main = new Main();
     
     @Override
@@ -215,6 +217,7 @@ public class AuthController extends DatabaseConnect implements Controllable{
             } 
     }
     
+    @Override
     public void userForm(){
         Scanner sc = new Scanner(System.in);
         System.out.println("\n[REGISTER]");
@@ -268,6 +271,60 @@ public class AuthController extends DatabaseConnect implements Controllable{
         user.setRole(0);
         createUser();
     };
+    
+    @Override
+    public void userForm(int user_id){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("\n[Edit User Profile]");
+        System.out.println("User ID: " + user_id);
+        System.out.println("Please fill up the form correctly");
+        
+        String name = "";
+        do {            
+            System.out.print("First Name: ");
+            name = sc.nextLine().trim();
+            user.setFirstName(name);
+        } while (name.equals(""));
+        
+        do {            
+        System.out.print("Last Name: ");
+            name = sc.nextLine().trim();
+            user.setLastName(name);
+        } while (name.equals(""));
+        
+        birthMonth(user.getMonthOfBirth());
+        birthDay(user.getDayOfBirth());
+        birthYear(user.getYearOfBirth());
+        
+        System.out.println("[M] sMale  [F] Female  [Any] Unknown");
+        System.out.print("Gender: ");
+        String gender = sc.nextLine().toUpperCase();
+        switch(gender){
+            case "M":
+                user.setGender("Male");
+                break;
+            case "F":
+                user.setGender("Female");
+                break;
+            default:
+                user.setGender("Unknown");
+                break;
+        }
+//        
+//        validateEmail(null);
+//        System.out.println("Email " + user.getEmail() + " is available.");
+//        
+        validateContact(user.getContact());
+        System.out.println("Contact " + user.getContact() + " is available.");
+        
+//        validateUsername(user.getUserName());
+//        System.out.println("Username " + user.getUserName() + " is available.");
+
+
+        System.out.print("Create Password: ");
+        user.setPassword(sc.nextLine());   
+    };
+    
     
     // "insert into users (id,username,password,email,firstname,lastname,dateofbirth,age,role)values(?,?,?,?,?,?,?,?,?)"
     public void createUser(){
@@ -401,6 +458,15 @@ public class AuthController extends DatabaseConnect implements Controllable{
     
     public static void main(String[] args) {
         AuthController auth = new AuthController();
-        auth.timeOut();
+        // auth.timeOut();
+        //auth.userForm(20230007);
+//        System.out.println("First Name: " + user.getFirstName());
+//        System.out.println("Last Name: " + user.getLastName());
+//        System.out.println("Contact: " + user.getLastName());
+//        System.out.println("Birthday: " + user.getMonthOfBirth() + " " + user.getDayOfBirth() + ", " + user.getYearOfBirth());
+//        System.out.print("Password: ");
+//        for (int i = 0; i < user.getPassword().length(); i++) {
+//            System.out.print("*");
+//        }System.out.println("");
     }
 }

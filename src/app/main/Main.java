@@ -26,7 +26,6 @@ public class Main extends MenuController{
         System.out.println("*             INVENTORY MANAGEMENT SYSTEM           *");
         System.out.println("*                                                   *");
         System.out.println("*****************************************************");
-        // Main m = new Main();
         menu();
     }
     

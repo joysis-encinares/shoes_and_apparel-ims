@@ -26,6 +26,7 @@ public class MenuController {
                 uc.createOrder(user.getId());
                 break;
             case 2:
+                uc.editProfile(user.getId());
                 break;
             case 3:
                 auth.timeOut();

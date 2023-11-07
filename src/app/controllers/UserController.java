@@ -1,21 +1,22 @@
 package app.controllers;
 
 import app.configdb.DatabaseConnect;
+import static app.controllers.AuthController.user;
 import static app.controllers.MenuController.userMenu;
 import app.models.Customer;
-import app.models.Product;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class UserController extends DatabaseConnect{
+    public static AuthController auth = new AuthController();
     Scanner scan = new Scanner(System.in);
     Customer customer = new Customer();
-    MenuController mc = new MenuController();
     Date date = new Date();
+    // MenuController mc = new MenuController();
 
-   // new customer form
-    private void form(){
+    // new customer form
+    private void customerForm(){
         System.out.println("New Customer");
         System.out.print("Name: ");
         customer.setCustomerName(scan.nextLine()); // use our setter method from models
@@ -58,24 +59,6 @@ public class UserController extends DatabaseConnect{
             System.out.println(e);
         }
     }
-    
-//    private void getStockById(int productId){
-//        int stock = 0;
-//        String query = "SELECT on_stock FROM products WHERE product_id = " + productId;
-//        try {
-//            ConnectDB();
-//            stmt = connect.createStatement();
-//            result = stmt.executeQuery(query);
-//
-//            while(result.next()){
-//                System.out.println(result.getInt(1));
-//                stock = result.getInt(1);
-//            }
-//        } catch (Exception e) {
-//            System.out.println(e);
-//        }
-//        System.out.println("stock: " +  stock);
-//    }
     
     int getStockById(int productId){
         int stock = 0;
@@ -128,7 +111,7 @@ public class UserController extends DatabaseConnect{
             int selector = sc.nextInt();
             switch(selector){
                 case 1: 
-                    form();
+                    customerForm();
                     displayCustomer();
                     break;
                 case 2: 
@@ -197,8 +180,45 @@ public class UserController extends DatabaseConnect{
         }
     }
   
-        public static void main(String[] args) {
-            UserController uc = new UserController();
-            uc.createOrder(20230004);
+    // UPDATE `users` SET `password` = '12345' WHERE `users`.`user_id` = 20230003;
+    public void editProfile(int user_id){
+        
+        // auth.userForm(20230007);
+        auth.userForm(user_id);
+        String birthday = user.getMonthOfBirth() + " " + user.getDayOfBirth() + ", " + user.getYearOfBirth();
+        // UPDATE users SET user_firstname = 'Don',user_lastname = 'Martin' WHERE users.user_id = 20230007;
+        String query = "UPDATE users SET user_firstname = '"+ user.getFirstName() + "', "
+                                       + "user_lastname = '" + user.getLastName() + "', "
+                                       + "user_birthday = '" + birthday + "', "
+                                       + "user_age = '" + user.getAge() + "', "
+                                       + "user_contact = '" + user.getContact() + "', "
+                                       + "password = '" + user.getPassword() + "' "
+                                       + " WHERE users.user_id = " + user_id +"";
+        try {
+            ConnectDB();
+            pst = connect.prepareStatement(query);
+            pst.executeUpdate();
+            
+            System.out.println("User ID `" + user_id +"` updated successfully");
+            System.out.println("First Name: " + user.getFirstName());
+            System.out.println("Last Name: " + user.getLastName());
+            System.out.println("Contact: " + user.getContact());
+            System.out.println("Birthday: " + birthday);
+            System.out.println("Age: " + user.getAge());
+            System.out.print("Password: ");
+            for (int i = 0; i < user.getPassword().length(); i++) {
+                System.out.print("*");
+            }
+            System.out.println("");
+            userMenu();
+        } catch (Exception e) {
+            System.out.println(e);
         }
+    }
+    
+    public static void main(String[] args) {
+        UserController uc = new UserController();
+        // uc.createOrder(20230004);
+        uc.editProfile(20230007);
+    }
 }
